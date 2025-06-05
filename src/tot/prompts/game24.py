@@ -13,7 +13,7 @@ Answer: 5 + 5 + 5 + 9 = 24
 Input: {input}
 '''
 
-# 5-shot
+# 5-shot 提供完整的解题示例，告诉 GPT 最终需要的输出格式
 cot_prompt = '''Use numbers and basic arithmetic operations (+ - * /) to obtain 24. Each step, you are only allowed to choose two of the remaining numbers to obtain a new number.
 Input: 4 4 6 8
 Steps:
@@ -48,7 +48,7 @@ Answer: ((5 + 5) + 5) + 9 = 24
 Input: {input}
 '''
 
-# 1-shot
+# 1-shot 提供中间步骤的示例，告诉 GPT 如何生成下一步可能的操作
 propose_prompt = '''Input: 2 8 8 14
 Possible next steps:
 2 + 8 = 10 (left: 8 10 14)
@@ -103,7 +103,7 @@ impossible
 impossible
 {input}
 '''
-
+# 让模型粗略判断最后一步的答案是否正确
 value_last_step_prompt = '''Use numbers and basic arithmetic operations (+ - * /) to obtain 24. Given an input and an answer, give a judgement (sure/impossible) if the answer is correct, i.e. it uses each input exactly once and no other numbers, and reach 24.
 Input: 4 4 6 8
 Answer: (4 + 8) * (6 - 4) = 24

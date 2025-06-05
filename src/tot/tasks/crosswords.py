@@ -5,6 +5,7 @@ from tot.tasks.base import Task, DATA_PATH
 from tot.prompts.crosswords import * 
 from tot.models import gpt
 
+# 迷你纵横填字游戏的环境，管理游戏状态、渲染界面、处理玩家的行动等
 class MiniCrosswordsEnv:
     def __init__(self, file='mini0505.json'):
         self.file = os.path.join(DATA_PATH, 'crosswords', file)
@@ -18,7 +19,7 @@ class MiniCrosswordsEnv:
 
     def __len__(self):
         return self.n
-    
+    # 重置游戏状态，包括棋盘、答案和状态信息
     def reset(self, idx, board=None, status=None, steps=None):
         self.idx = idx
         self.data, self.board_gt = self.file[idx]
@@ -36,7 +37,7 @@ class MiniCrosswordsEnv:
             self.steps = steps
         return self.render()
     
-
+    # 根据当前答案评估每个线索的状态（确定、可能、不可能）
     def prompt_status(self):
         count = {'sure': 0, 'maybe': 0, 'impossible': 0}
         for ans, data, status in zip(self.ans, self.data, self.status):
@@ -68,7 +69,8 @@ class MiniCrosswordsEnv:
         s = "Current Board:\n"
         for i in range(5):
             s += ''.join(self.board[i*5:(i+1)*5]) + '\n'
-        return s
+        return s # 'Current Board:\n_____\n_____\n_____\n_____\n_____\n'
+
 
     def render_clues(self, status=None):
         s = ""
@@ -147,7 +149,7 @@ class MiniCrosswordsEnv:
         self.ans = self.new_ans
         r_all = (self.board == self.board_gt)
         r_letter = sum(a == b for a, b in zip(self.board, self.board_gt)) / 25
-        r_word = sum(a == b for a, b in zip(self.ans, self.ans_gt)) / 10
+        r_word = sum(a == b for a, b in zip(self.ans, self.ans_gt)) / 10 # 0.1
         return self.render(), r_all, (r_all or self.steps >= 20), {'r_letter': r_letter, 'r_word': r_word, 'r_game': r_all}
 
 

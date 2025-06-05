@@ -58,7 +58,7 @@ class TextTask(Task):
 
     @staticmethod
     def vote_prompt_wrap(x: str, ys: list) -> str:
-        prompt = vote_prompt
+        prompt = vote_prompt # 选择最有希望的项id
         for i, y in enumerate(ys, 1):
             # y = y.replace('Plan:\n', '')
             # TODO: truncate the plan part?
